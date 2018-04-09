@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Welcome!</title>
+		<title>HammerWatch Puzzle Solution</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<!-- Font Awesome -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -14,12 +14,19 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" type "text/css" href="main.css">
+		<link rel="stylesheet" type "text/css" href="hammerwatch.css">
 	</head>
 	
 	<body>
-	
+		<div style="text-align: center">
+			<input id="number" type="number" value=3 />
+			<div id="buttons">
+			</div>
+			<button id="start" onclick="start()">Start</button>
+			<p id="press"></p>
+		</div>
 		<script src="hammerwatch.js"></script>
+		<script src="buttons.js"></script>
 		
 	</body>
 </html>
