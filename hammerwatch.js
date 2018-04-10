@@ -74,6 +74,28 @@ function Puzzle(n) {
 	}
 }
 
+function PriorityQueue() {
+	this.arr = [];
+	this.add  = function(priority, puzzle) {
+		for (var i = 0; i < this.arr.length; i++) {
+			if (this.arr[i]['priority'] < priority) {
+				this.arr = this.arr.slice(0,i).concat([{priority: priority, puzzle: puzzle}]).concat(this.arr.slice(i));
+				return;
+			}
+		}
+		this.arr = this.arr.concat([{priority: priority, puzzle: puzzle}]);
+		
+	}
+	
+	this.remove = function() {
+		if (this.arr.length == 0) {
+			return null;
+		} else {
+			return this.arr.shift().puzzle;
+		}
+	}
+}
+
 function sequence(puzzle, solution) {
 	var queue = [];
 	var set = {};
@@ -123,11 +145,11 @@ function containsPuzzle(set, puzzle) {
 	}
 	return false;
 }
-/*
-var puzzle = new Puzzle(3);
 
-var solution = new Puzzle(3);
-solution.makeSolution();
-var solutionChain = sequence(puzzle, solution);
-console.log(getArr(solutionChain));
-*/
+var pq = new PriorityQueue();
+pq.add(1, 'hello');
+pq.add(4, 'hello');
+pq.add(3, 'hello');
+pq.remove();
+
+console.log(pq.remove());
