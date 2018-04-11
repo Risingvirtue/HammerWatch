@@ -1,5 +1,6 @@
 function Puzzle(n) {
 	this.length = n;
+	this.count = n*n;
 	this.create = function(n) {
 		var puzzle = [];
 		for (var i = 0; i < n; i++) {
@@ -28,11 +29,11 @@ function Puzzle(n) {
 	
 	this.copy = function(puzzle) {
 		for (var i = 0; i < this.length; i++) {
-			
 			for (var j = 0; j < this.length; j++) {
 				this.arr[i][j] = puzzle.arr[i][j];
 			}
 		}
+		this.count = puzzle.count;
 	}
 	
 	this.equals = function(puzzle) {
@@ -54,31 +55,38 @@ function Puzzle(n) {
 		var bottom = y + 1;
 	
 		this.arr[y][x] = !this.arr[y][x];
-		
-		if (left >=0) {
+		this.count = this.arr[y][x] ? this.count - 1 : this.count + 1;
+		if (left >= 0) {
 			this.arr[y][left] = !this.arr[y][left];
+			this.count = this.arr[y][left] ? this.count - 1 : this.count + 1;
 		}
 	
 		if (right < this.length) {
-    		this.arr[y][right] = !this.arr[y][right];	
+    		this.arr[y][right] = !this.arr[y][right];
+			this.count = this.arr[y][right] ? this.count - 1 : this.count + 1;
 		}
 	
 		if (top >= 0) {
 			this.arr[top][x] = !this.arr[top][x];
+			this.count = this.arr[top][x] ? this.count - 1 : this.count + 1;
 		}
 	
 		if (bottom < this.length) {
 			this.arr[bottom][x] = !this.arr[bottom][x];
+			this.count = this.arr[bottom][x] ? this.count - 1 : this.count + 1;
 		
 		}
 	}
+	
+	
+	
 }
 
 function PriorityQueue() {
 	this.arr = [];
 	this.add  = function(priority, puzzle) {
 		for (var i = 0; i < this.arr.length; i++) {
-			if (this.arr[i]['priority'] < priority) {
+			if (priority < this.arr[i]['priority']) {
 				this.arr = this.arr.slice(0,i).concat([{priority: priority, puzzle: puzzle}]).concat(this.arr.slice(i));
 				return;
 			}
@@ -97,15 +105,15 @@ function PriorityQueue() {
 }
 
 function sequence(puzzle, solution) {
-	var queue = [];
+	var pq = new PriorityQueue();
 	var set = {};
-	queue.push(puzzle);
+	pq.add(puzzle.count, puzzle);
 	set[puzzle.arr] = true;
 	
-	while (queue.length != 0) {
-		console.log(queue.length);
-		var currPuzzle = queue.shift();
-		if (currPuzzle.equals(solution)) {
+	while (pq.arr.length != 0) {
+		var currPuzzle = pq.remove();
+		console.log(currPuzzle);
+		if (currPuzzle.count == 0) {
 			return currPuzzle;
 		}
 		for (var i = 0; i < currPuzzle.length; i++) {
@@ -117,13 +125,15 @@ function sequence(puzzle, solution) {
 				newPuzzle.prevPress = {x: j, y: i};
 				if (!(newPuzzle.arr in set)) {
 					set[newPuzzle.arr] = true;
-					queue.push(newPuzzle);
+					pq.add(newPuzzle.count, newPuzzle);
 				}
 			}
 		}
 	}
+	
 	return false;
 }
+
 
 function getArr(solutionChain) {
 	var arr = [];
@@ -146,10 +156,4 @@ function containsPuzzle(set, puzzle) {
 	return false;
 }
 
-var pq = new PriorityQueue();
-pq.add(1, 'hello');
-pq.add(4, 'hello');
-pq.add(3, 'hello');
-pq.remove();
 
-console.log(pq.remove());

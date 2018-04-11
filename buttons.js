@@ -73,10 +73,11 @@ function start() {
 		isStarted = true;
 		$('#start').html('Next');
 		var solution = new Puzzle(puzzle.length);
+		
 		solution.makeSolution();
 		var solutionChain = sequence(puzzle, solution);
 		solutionArr = getArr(solutionChain);
-		console.log(solutionArr);
+		
 	} else {
 		console.log(solutionArr);
 		if (solutionArr.length != 0) {
